@@ -14,6 +14,7 @@ const CACHE_CONFIG = {
 };
 // インストール時のキャッシュ
 self.addEventListener('install', (event) => {
+    console.log('Service Worker installed', event);
     event.waitUntil(caches.open(CACHE_CONFIG.cacheName)
         .then(cache => {
         console.log('Cache opened');
@@ -23,6 +24,7 @@ self.addEventListener('install', (event) => {
 });
 // アクティベート時の古いキャッシュ削除
 self.addEventListener('activate', (event) => {
+    console.log('Service Worker activated', event);
     event.waitUntil(Promise.all([
         caches.keys().then(cacheNames => {
             return Promise.all(cacheNames
@@ -34,6 +36,7 @@ self.addEventListener('activate', (event) => {
 });
 // フェッチ時のキャッシュ戦略
 self.addEventListener('fetch', (event) => {
+    console.log('Fetching:', event.request.url);
     event.respondWith(caches.match(event.request)
         .then(response => {
         if (response) {
