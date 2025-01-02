@@ -1,32 +1,15 @@
 /// <reference lib="webworker" />
-/// <reference types="vite/client" />
-
-import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
-import { clientsClaim } from 'workbox-core';
-
-declare let self: ServiceWorkerGlobalScope;
-
-// Service Workerの即時有効化
-self.skipWaiting();
-clientsClaim();
-
-// キャッシュの古いバージョンをクリーンアップ
-cleanupOutdatedCaches();
-
-// プリキャッシュを設定
-precacheAndRoute(self.__WB_MANIFEST);
-
-// インストール時の処理
-self.addEventListener('install', (event) => {
-  console.log('Service Worker installing.', event);
+// インストール時のキャッシュ
+self.addEventListener('install', (event: ExtendableEvent) => {
+  console.log('Service Worker installed', event);
 });
 
-// アクティベート時の処理
-self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating.', event);
+// アクティベート時の古いキャッシュ削除
+self.addEventListener('activate', (event: ExtendableEvent) => {
+  console.log('Service Worker activated', event);
 });
 
-// フェッチ時の処理
-self.addEventListener('fetch', (event) => {
+// フェッチ時のキャッシュ戦略
+self.addEventListener('fetch', (event: FetchEvent) => {
   console.log('Fetching:', event.request.url);
 });

@@ -43,7 +43,7 @@ console.log('PWA application started');
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register('/sw.js')
+      .register('/service-worker.js')
       .then((registration) => {
         console.log('Service Worker registered:', registration);
       })

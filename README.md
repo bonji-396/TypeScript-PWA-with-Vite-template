@@ -2,13 +2,32 @@
 
 Viteを利用して、TypeScriptでPWAのフロントエンドアプリを作るためのテンプレートです。
 
-PWA実装には、vite-plugin-pwaや、workbox-precachingをしようせず、手動で設定します。
+PWA実装には、vite-plugin-pwaや、workbox-precachingを使用せず、手動で設定します。
+
 
 ## 主な技術構成
+- Node.js
 - TypeScript
 - PWA
 - Sass
 - RxJS
+
+
+## 行いたいこと
+
+基本的には、PWAのフロントエンドをTypeScriptで記述し作成するためのテンプレートとして利用したい。
+最低限以下の導入が済んだ状態を条件としています。
+
+- `manifest.json`  
+まずは、拡張機能やプログレッシブウェブアプリ（PWA）の動作を定義するJSON形式のファイルを初期で導入。
+- `serivce-worker.ts`  
+TypeScriptにて、service-worker.tsを書き、service-worker.jsをにコンパイルして利用する。またキャッシュ戦略や同期処理なども、PWAライブラリ等を利用せずに、自身で実装したいため最低限のコードのみを記載。
+- `sass`  
+scssの利用に慣れているので、sassの導入はしたかった。
+- `rxjs`  
+機能として利用するJavaScript用ライブラリをサンプル導入例として、リアクティブプログラミングライブラリを選択。
+
+また、開発効率を上げるため、開発サーバーでの自動更新で反映させたい。
 
 
 ## 導入
@@ -20,7 +39,7 @@ npm install
 
 - ` npm create vite`コマンド  
    ```zsh
-   npm create vite@latest TypeScript-PWA-with-Vite-and-Workbox-template -- --template vanilla-ts
+   npm create vite@latest TypeScript-PWA-with-Vite-template -- --template vanilla-ts
    cd TypeScript-PWA-with-Vite-template
    npm install rxjs
    npm install -D sass typescript @types/serviceworker
@@ -35,16 +54,15 @@ npm install
 
 
 ### 開発利用パッケージ
-
 これらのパッケージは主に開発環境の構築とビルドプロセスの自動化に使用されています。
-- @types/serviceworker:  
-Service Worker APIのTypeScript型定義ファイル。PWA（Progressive Web App）開発において、Service Workerを型安全に実装するために使用
-- sass:  
-Webで人気の高いCSSプリプロセッサー。変数、ネスト、ミックスインなどの機能を提供し、効率的なスタイルシート開発を可能にする
-- typescript:  
-JavaScriptに静的型付けを追加したプログラミング言語。コード品質の向上とIDEのサポート強化に寄与する
-- vite:  
-モダンなフロントエンド開発ツール。超高速な開発サーバーとビルドツールを提供し、ESモジュールを活用した効率的な開発が可能
+
+|パッケージ|説明|
+|---|---|
+|@types/serviceworker|Service Workerのための TypeScript型定義ファイル。PWAの開発において、Service WorkerのAPIを型安全に利用するために必要です。|
+|sass|SASSプリプロセッサのNode.js実装。SCSSファイルをCSSにコンパイルするために使用します。
+|typescript|JavaScriptに静的型付けを追加するプログラミング言語。型安全性とIDEのサポートを強化します。|
+|vite|モダンなフロントエンド開発ツール。超高速な開発サーバーとビルドツールを提供し、ESモジュールを活用した効率的な開発が可能|
+
 
 ### 本番利用パッケージ
 - rxjs: JavaScriptのリアクティブ拡張ライブラリ

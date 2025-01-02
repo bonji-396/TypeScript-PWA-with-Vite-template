@@ -4,13 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PWA App</title>
-    <meta name="description" content="A simple PWA using TypeScript and Vite">
+    <meta name="description" content="A simple PWA using TypeScript and Vite" />
     <link rel="icon" href="/icons/favicon.png" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="PWA App" />
+    <link
+      rel="apple-touch-icon"
+      sizes="192x192"
+      href="icons/apple-touch-icon.png"
+    />
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
-    <p>hoge</p>
+    <h1>hoge</h1>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
