@@ -1,32 +1,63 @@
 /// <reference lib="webworker" />
-/// <reference types="vite/client" />
+/* eslint-disable no-restricted-globals */
 
-import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
-import { clientsClaim } from 'workbox-core';
+interface CacheUrls {
+  readonly cacheFiles: string[];
+  readonly cacheName: string;
+}
 
-declare let self: ServiceWorkerGlobalScope;
+const CACHE_CONFIG: CacheUrls = {
+  cacheName: 'v1',
+  cacheFiles: [
+    '/',
+    '/index.html',
+    '/manifest.json',
+    '/icons/favicon.png',
+    '/icons/icon-192x192.png',
+    '/icons/icon-512x512.png'
+  ]
+};
 
-// Service Workerの即時有効化
-self.skipWaiting();
-clientsClaim();
-
-// キャッシュの古いバージョンをクリーンアップ
-cleanupOutdatedCaches();
-
-// プリキャッシュを設定
-precacheAndRoute(self.__WB_MANIFEST);
-
-// インストール時の処理
-self.addEventListener('install', (event) => {
-  console.log('Service Worker installing.', event);
+// インストール時のキャッシュ
+self.addEventListener('install', (event: ExtendableEvent) => {
+  console.log('Service Worker installed', event);
+  event.waitUntil(
+    caches.open(CACHE_CONFIG.cacheName)
+      .then(cache => {
+        console.log('Cache opened');
+        return cache.addAll(CACHE_CONFIG.cacheFiles);
+      })
+      .then(() => self.skipWaiting())
+  );
 });
 
-// アクティベート時の処理
-self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating.', event);
+// アクティベート時の古いキャッシュ削除
+self.addEventListener('activate', (event: ExtendableEvent) => {
+  console.log('Service Worker activated', event);
+  event.waitUntil(
+    Promise.all([
+      caches.keys().then(cacheNames => {
+        return Promise.all(
+          cacheNames
+            .filter(name => name !== CACHE_CONFIG.cacheName)
+            .map(name => caches.delete(name))
+        );
+      }),
+      self.clients.claim()
+    ])
+  );
 });
 
-// フェッチ時の処理
-self.addEventListener('fetch', (event) => {
+// フェッチ時のキャッシュ戦略
+self.addEventListener('fetch', (event: FetchEvent) => {
   console.log('Fetching:', event.request.url);
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
+  );
 });

@@ -2,7 +2,7 @@
 
 Viteを利用して、TypeScriptでPWAのフロントエンドアプリを作るためのテンプレートです。
 
-PWA実装には、vite-plugin-pwaや、workbox-precachingをしようせず、手動で設定します。
+PWA実装には、vite-plugin-pwaや、workbox-precachingを使用せず、手動で設定します。
 
 ## 主な技術構成
 - TypeScript
